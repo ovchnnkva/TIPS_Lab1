@@ -96,19 +96,44 @@
        </Tab>
        <Tab text="Маршруты" />
        <Tab text="Результаты" />
-         <Tab text="Узел/Канал 1">
+         <Tab text="Узлы">
+             <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="795.0">
+
+                 <TextField fx:id="probabilityNode1Failure" layoutX="232.0" layoutY="42.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="14.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа 1 узла" />
+
+                 <TextField fx:id="recoveryTimeNode1" layoutX="232.0" layoutY="74.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="13.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время восстановления 1 узла" />
+
+                 <TextField fx:id="probabilityNode2Failure" layoutX="232.0" layoutY="125.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="14.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа 2 узла" />
+
+                 <TextField fx:id="recoveryTimeNode2" layoutX="232.0" layoutY="159.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="13.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время восстановления 2 узла" />
+
+
+                 <TextField fx:id="probabilityNode3Failure" layoutX="619.0" layoutY="42.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа 3 узла" />
+
+                 <TextField fx:id="recoveryTimeNode3" layoutX="619.0" layoutY="74.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время восстановления 3 узла" />
+
+
+                 <TextField fx:id="probabilityNode4Failure" layoutX="619.0" layoutY="125.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа 4 узла" />
+
+                 <TextField fx:id="recoveryTimeNode4" layoutX="619.0" layoutY="159.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время восстановления 4 узла" />
+
+             </Pane>
+         </Tab>
+         <Tab text="Канал 1">
              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="795.0">
                  <TextField fx:id="probabilityChannel1Failure" layoutX="222.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа канала" />
 
-                 <TextField fx:id="probabilityNode1Failure" layoutX="222.0" layoutY="73.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="14.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа узла" />
-
-                 <TextField fx:id="recoveryTimeNode1" layoutX="222.0" layoutY="122.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="13.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время восстановления узла" />
-
-                 <TextField fx:id="countInTheBundleChannel1" layoutX="222.0" layoutY="172.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="14.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
+                 <TextField fx:id="countInTheBundleChannel1" layoutX="222.0" layoutY="72.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="14.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
 
                  <TextField fx:id="recoveryTimeChannel1" layoutX="600.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="414.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время ожидания восстановления канала" wrappingWidth="186.4141845703125" />
@@ -121,19 +146,13 @@
              </Pane>
          </Tab>
 
-         <Tab text="Узел/Канал 2">
+         <Tab text="Канал 2">
              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="795.0">
                  <TextField fx:id="probabilityChannel2Failure" layoutX="222.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа канала" />
 
-                 <TextField fx:id="probabilityNode2Failure" layoutX="222.0" layoutY="73.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="14.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа узла" />
-
-                 <TextField fx:id="recoveryTimeNode2" layoutX="222.0" layoutY="122.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="13.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время восстановления узла" />
-
-                 <TextField fx:id="countInTheBundleChannel2" layoutX="222.0" layoutY="172.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="14.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
+                 <TextField fx:id="countInTheBundleChannel2" layoutX="222.0" layoutY="72.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="14.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
 
                  <TextField fx:id="recoveryTimeChannel2" layoutX="600.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="414.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время ожидания восстановления канала" wrappingWidth="186.4141845703125" />
@@ -146,19 +165,13 @@
              </Pane>
          </Tab>
 
-         <Tab text="Узел/Канал 3">
+         <Tab text="Канал 3">
              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="795.0">
                  <TextField fx:id="probabilityChannel3Failure" layoutX="222.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа канала" />
 
-                 <TextField fx:id="probabilityNode3Failure" layoutX="222.0" layoutY="73.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="14.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа узла" />
-
-                 <TextField fx:id="recoveryTimeNode3" layoutX="222.0" layoutY="122.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="13.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время восстановления узла" />
-
-                 <TextField fx:id="countInTheBundleChannel3" layoutX="222.0" layoutY="172.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="14.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
+                 <TextField fx:id="countInTheBundleChannel3" layoutX="222.0" layoutY="72.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="14.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
 
                  <TextField fx:id="recoveryTimeChannel3" layoutX="600.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="414.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время ожидания восстановления канала" wrappingWidth="186.4141845703125" />
@@ -171,19 +184,13 @@
              </Pane>
          </Tab>
 
-         <Tab text="Узел/Канал 4">
+         <Tab text="Канал 4">
              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="795.0">
                  <TextField fx:id="probabilityChannel4Failure" layoutX="222.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа канала" />
 
-                 <TextField fx:id="probabilityNode4Failure" layoutX="222.0" layoutY="73.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="14.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа узла" />
-
-                 <TextField fx:id="recoveryTimeNode4" layoutX="222.0" layoutY="122.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="13.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время восстановления узла" />
-
-                 <TextField fx:id="countInTheBundleChannel4" layoutX="222.0" layoutY="172.0" prefHeight="24.0" prefWidth="176.0" />
-                 <Text layoutX="14.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
+                 <TextField fx:id="countInTheBundleChannel4" layoutX="222.0" layoutY="72.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="21.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
 
                  <TextField fx:id="recoveryTimeChannel4" layoutX="600.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="414.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время ожидания восстановления канала" wrappingWidth="186.4141845703125" />
@@ -192,6 +199,43 @@
                  <Text layoutX="414.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Скорость модуляции в канале" wrappingWidth="171.2345123291015" />
 
                  <TextField fx:id="avgLengthPackageChannel4" layoutX="600.0" layoutY="122.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Средняя длина пакета" wrappingWidth="186.4141845703125" />
+             </Pane>
+         </Tab>
+
+         <Tab text="Канал 5">
+             <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="795.0">
+                 <TextField fx:id="probabilityChannel5Failure" layoutX="222.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа канала" />
+
+                 <TextField fx:id="countInTheBundleChannel5" layoutX="222.0" layoutY="72.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="21.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
+
+                 <TextField fx:id="recoveryTimeChannel5" layoutX="600.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время ожидания восстановления канала" wrappingWidth="186.4141845703125" />
+
+                 <TextField fx:id="modulationRateChannel5" layoutX="600.0" layoutY="73.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Скорость модуляции в канале" wrappingWidth="171.2345123291015" />
+
+                 <TextField fx:id="avgLengthPackageChannel5" layoutX="600.0" layoutY="122.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Средняя длина пакета" wrappingWidth="186.4141845703125" />
+             </Pane>
+         </Tab>
+         <Tab text="Канал 6">
+             <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="795.0">
+                 <TextField fx:id="probabilityChannel6Failure" layoutX="222.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вероятность отказа канала" />
+
+                 <TextField fx:id="countInTheBundleChannel6" layoutX="222.0" layoutY="72.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="21.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число каналов в пучке" textAlignment="RIGHT" />
+
+                 <TextField fx:id="recoveryTimeChannel6" layoutX="600.0" layoutY="24.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время ожидания восстановления канала" wrappingWidth="186.4141845703125" />
+
+                 <TextField fx:id="modulationRateChannel6" layoutX="600.0" layoutY="73.0" prefHeight="24.0" prefWidth="176.0" />
+                 <Text layoutX="414.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Скорость модуляции в канале" wrappingWidth="171.2345123291015" />
+
+                 <TextField fx:id="avgLengthPackageChannel6" layoutX="600.0" layoutY="122.0" prefHeight="24.0" prefWidth="176.0" />
                  <Text layoutX="414.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Средняя длина пакета" wrappingWidth="186.4141845703125" />
              </Pane>
          </Tab>

@@ -2,16 +2,20 @@ package com.example.tips_lab1.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Route {
     private List<Node> route;
     private int countChannel;
     private final String routeStr;
 
-    public Route(List<Node> route, int countChannel, String routeStr) {
+    private List<Channel> channels;
+
+    public Route(List<Node> route, int countChannel, String routeStr, List<Channel> channels) {
         this.route = route;
         this.countChannel = countChannel;
         this.routeStr = routeStr;
+        this.channels = channels;
     }
 
     public List<Node> getRoute() {
@@ -33,34 +37,51 @@ public class Route {
         this.countChannel = countChannel;
     }
 
+    public List<Channel> getChannel() {
+        return channels;
+    }
+
+    public void setChannel(List<Channel> channel) {
+        this.channels = channel;
+    }
+
     public double getProbabilityOfRoute() {
         double result = 1.0;
         System.out.println("node size " + route.size());
-        for(int i = 0; i<route.size();i++) {
-            Node node = route.get(i);
-            if(checkNode(node)){
-                if(i == route.size() - 1) {
-                    result *= (1 - node.getProbabilityNodeFailure());
-                } else {
-                    result *= (1 - node.getProbabilityNodeFailure()) * (1 - node.getProbabilityChannelFailure());
-                }
-                System.out.println(routeStr + " node " + node.getLabel() + " channel probability = " + node.getProbabilityChannelFailure() + " node probability " + node.getProbabilityNodeFailure());
+        System.out.println("channel size " + channels.size());
+        for(int i = 0; i<route.size() - 1;i++) {
+            Node startNode = route.get(i);
+            Node endNode = route.get(i + 1);
+            if(checkNodeAndChannel(startNode) && checkChannel(startNode,endNode)){
+                result *= (1 - startNode.getProbabilityNodeFailure()) * (1 - getProbabilityChannel(startNode, endNode));
+                System.out.println(routeStr + " node " + startNode.getLabel() + " channel probability = " + getProbabilityChannel(startNode, endNode) + " node probability " + startNode.getProbabilityNodeFailure());
             } else {
                 return 0.0;
             }
+
         }
+        result *= (1 - route.get(route.size()-1).getProbabilityNodeFailure());
         System.out.println("route " + routeStr + " probability " + result);
         return 1.0 - result;
     }
 
-    public boolean checkNode(Node node) {
-        return node.getProbabilityNodeFailure() != 0 && node.getProbabilityChannelFailure() != 0;
+    public boolean checkNodeAndChannel(Node node) {
+        return node.getProbabilityNodeFailure() != 0;
+    }
+
+    public boolean checkChannel(Node nodeStart, Node nodeEnd) {
+        Optional<Channel> findChannel = channels.stream().filter(c -> c.getNodes().contains(nodeStart) && c.getNodes().contains(nodeEnd)).findFirst();
+        return findChannel.isPresent();
     }
 
     public void setRoute(List<Node> route) {
         this.route = route;
     }
 
+    private double getProbabilityChannel(Node nodeStart, Node nodeEnd) {
+        Optional<Channel> findChannel = channels.stream().filter(c -> c.getNodes().contains(nodeStart) && c.getNodes().contains(nodeEnd)).findFirst();
+        return findChannel.isPresent() ? findChannel.get().getProbabilityFailure() : 0.0;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

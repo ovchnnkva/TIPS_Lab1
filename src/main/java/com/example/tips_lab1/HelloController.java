@@ -2,6 +2,7 @@ package com.example.tips_lab1;
 
 import com.example.tips_lab1.formatter.StringToDoubleFormatter;
 import com.example.tips_lab1.formatter.StringToRouteStringFormatter;
+import com.example.tips_lab1.model.Channel;
 import com.example.tips_lab1.model.Node;
 import com.example.tips_lab1.model.Route;
 import javafx.collections.FXCollections;
@@ -38,6 +39,7 @@ public class HelloController {
     @FXML
     public Button clearRoute;
 
+
     //Основные
     @FXML
     private TextField avgRecoveryChannel;
@@ -55,14 +57,30 @@ public class HelloController {
 
     @FXML
     private ComboBox<String> connectionSellect;
-
-    // Узел/Канал 1
-    @FXML
-    public TextField probabilityChannel1Failure;
+    //Канал 1
     @FXML
     public TextField probabilityNode1Failure;
     @FXML
     public TextField recoveryTimeNode1;
+    // Канал 2
+    @FXML
+    public TextField probabilityNode2Failure;
+    @FXML
+    public TextField recoveryTimeNode2;
+    // Канал 3
+    @FXML
+    public TextField probabilityNode3Failure;
+    @FXML
+    public TextField recoveryTimeNode3;
+    // Канал 4
+    @FXML
+    public TextField probabilityNode4Failure;
+    @FXML
+    public TextField recoveryTimeNode4;
+
+    // Узел 1
+    @FXML
+    public TextField probabilityChannel1Failure;
     @FXML
     public TextField modulationRateChannel1;
     @FXML
@@ -72,13 +90,9 @@ public class HelloController {
     @FXML
     public TextField avgLengthPackageChannel1;
 
-    // Узел/Канал 2
+    // Узел 2
     @FXML
     public TextField probabilityChannel2Failure;
-    @FXML
-    public TextField probabilityNode2Failure;
-    @FXML
-    public TextField recoveryTimeNode2;
     @FXML
     public TextField countInTheBundleChannel2;
     @FXML
@@ -87,13 +101,9 @@ public class HelloController {
     public TextField modulationRateChannel2;
     @FXML
     public TextField avgLengthPackageChannel2;
-    // Узел/Канал 3
+    // Узел 3
     @FXML
     public TextField probabilityChannel3Failure;
-    @FXML
-    public TextField probabilityNode3Failure;
-    @FXML
-    public TextField recoveryTimeNode3;
     @FXML
     public TextField countInTheBundleChannel3;
     @FXML
@@ -102,13 +112,9 @@ public class HelloController {
     public TextField modulationRateChannel3;
     @FXML
     public TextField avgLengthPackageChannel3;
-    // Узел/Канал 4
+    // Узел 4
     @FXML
     public TextField probabilityChannel4Failure;
-    @FXML
-    public TextField probabilityNode4Failure;
-    @FXML
-    public TextField recoveryTimeNode4;
     @FXML
     public TextField countInTheBundleChannel4;
     @FXML
@@ -117,9 +123,32 @@ public class HelloController {
     public TextField modulationRateChannel4;
     @FXML
     public TextField avgLengthPackageChannel4;
+    //Канал 5
+    @FXML
+    public TextField probabilityChannel5Failure;
+    @FXML
+    public TextField countInTheBundleChannel5;
+    @FXML
+    public TextField recoveryTimeChannel5;
+    @FXML
+    public TextField modulationRateChannel5;
+    @FXML
+    public TextField avgLengthPackageChannel5;
+    //Канал 6
+    @FXML
+    public TextField probabilityChannel6Failure;
+    @FXML
+    public TextField countInTheBundleChannel6;
+    @FXML
+    public TextField recoveryTimeChannel6;
+    @FXML
+    public TextField modulationRateChannel6;
+    @FXML
+    public TextField avgLengthPackageChannel6;
 
     private List<Route> routes;
     private List<Node> nodes;
+    private List<Channel> channels;
     private final DecimalFormat df = new DecimalFormat("#.#####");
 
 
@@ -127,19 +156,39 @@ public class HelloController {
     private void initialize() {
         routes = new ArrayList<>();
         nodes = new ArrayList<>();
+        channels = new ArrayList<>();
 
         nodes.addAll(Arrays.asList(new Node("1"), new Node("2"), new Node("3"), new Node("4")));
+
+        configureChannels();
 
         configureBaseTab();
         configureCommunications();
 
-        configureNodeAndChannel1Tab();
-        configureNodeAndChannel2Tab();
-        configureNodeAndChannel3Tab();
-        configureNodeAndChannel4Tab();
+        configureNodes();
+
+        configureChannel1Tab();
+        configureChannel2Tab();
+        configureChannel3Tab();
+        configureChannel4Tab();
+        configureChannel5Tab();
+        configureChannel6Tab();
 
         configureNodeButton();
         configureRoutesButton();
+    }
+
+    private void configureChannels() {
+        List<Channel> channelsList = new ArrayList<>();
+        channelsList.add(new Channel(Arrays.asList(nodes.get(0), nodes.get(1)), "1"));
+        channelsList.add(new Channel(Arrays.asList(nodes.get(0), nodes.get(3)), "4"));
+        channelsList.add(new Channel(Arrays.asList(nodes.get(0), nodes.get(2)), "3"));
+        channelsList.add(new Channel(Arrays.asList(nodes.get(1), nodes.get(3)), "5"));
+        channelsList.add(new Channel(Arrays.asList(nodes.get(1), nodes.get(2)), "2"));
+        channelsList.add(new Channel(Arrays.asList(nodes.get(2), nodes.get(3)), "6"));
+
+
+        channels.addAll(channelsList);
     }
 
     private void configureNodeButton() {
@@ -187,76 +236,119 @@ public class HelloController {
     private void configureCommunications() {
         connectionSellect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> changeProbabilityOfRoute(newValue));
     }
-    private void configureNodeAndChannel1Tab() {
-        probabilityChannel1Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+
+    private void configureNodes() {
         probabilityNode1Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         recoveryTimeNode1.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+
+        probabilityNode1Failure.textProperty().addListener(((observableValue, oldValue, newValue) ->
+                nodeFailureChanged("1", newValue)));
+
+        probabilityNode2Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        recoveryTimeNode2.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+
+        probabilityNode2Failure.textProperty().addListener(((observableValue, oldValue, newValue) ->
+                nodeFailureChanged("2", newValue)));
+
+        probabilityNode3Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        recoveryTimeNode3.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+
+        probabilityNode3Failure.textProperty().addListener(((observableValue, oldValue, newValue) ->
+                nodeFailureChanged("3", newValue)));
+
+        probabilityNode4Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        recoveryTimeNode4.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+
+        probabilityNode4Failure.textProperty().addListener(((observableValue, s, t1) ->
+                nodeFailureChanged("4", t1)));
+    }
+    private void configureChannel1Tab() {
+        probabilityChannel1Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         modulationRateChannel1.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         countInTheBundleChannel1.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         recoveryTimeChannel1.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         avgLengthPackageChannel1.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
 
-        probabilityChannel1Failure.textProperty().addListener((observableValue, oldValue, newValue) ->
-                channelFailureChanged("1", newValue));
+        probabilityChannel1Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            channels.stream().filter(c->c.getLabel().equals("1")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
+        });
 
-        probabilityNode1Failure.textProperty().addListener(((observableValue, oldValue, newValue) ->
-                nodeFailureChanged("1", newValue)));
     }
-    private void configureNodeAndChannel2Tab() {
+    private void configureChannel2Tab() {
         probabilityChannel2Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
-        probabilityNode2Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
-        recoveryTimeNode2.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         modulationRateChannel2.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         countInTheBundleChannel2.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         recoveryTimeChannel2.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         avgLengthPackageChannel2.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
 
-        probabilityChannel2Failure.textProperty().addListener((observableValue, oldValue, newValue) ->
-                channelFailureChanged("2", newValue));
+        probabilityChannel2Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
+                channels.stream().filter(c->c.getLabel().equals("2")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
+    });
 
-        probabilityNode2Failure.textProperty().addListener(((observableValue, oldValue, newValue) ->
-                nodeFailureChanged("2", newValue)));
 
     }
-    private void configureNodeAndChannel3Tab() {
+    private void configureChannel3Tab() {
         probabilityChannel3Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
-        probabilityNode3Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
-        recoveryTimeNode3.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         modulationRateChannel3.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         countInTheBundleChannel3.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         recoveryTimeChannel3.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         avgLengthPackageChannel3.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
 
-        probabilityChannel3Failure.textProperty().addListener((observableValue, oldValue, newValue) ->
-                channelFailureChanged("3", newValue));
-
-        probabilityNode3Failure.textProperty().addListener(((observableValue, oldValue, newValue) ->
-                nodeFailureChanged("3", newValue)));
+        probabilityChannel3Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
+                channels.stream().filter(c->c.getLabel().equals("3")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
+        });
 
     }
-    private void configureNodeAndChannel4Tab() {
+    private void configureChannel4Tab() {
         probabilityChannel4Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
-        probabilityNode4Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
-        recoveryTimeNode4.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         modulationRateChannel4.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         countInTheBundleChannel4.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         recoveryTimeChannel4.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         avgLengthPackageChannel4.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
 
-        probabilityChannel4Failure.textProperty().addListener((observableValue, oldValue, newValue) ->
-                channelFailureChanged("4", newValue));
+        probabilityChannel4Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            channels.stream().filter(c->c.getLabel().equals("4")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
+        });
+    }
 
+    private void configureChannel5Tab() {
+        probabilityChannel5Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        modulationRateChannel5.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        countInTheBundleChannel5.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        recoveryTimeChannel5.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        avgLengthPackageChannel5.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
 
-        probabilityNode4Failure.textProperty().addListener(((observableValue, s, t1) ->
-                nodeFailureChanged("4", t1)));
+        probabilityChannel5Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            channels.stream().filter(c->c.getLabel().equals("5")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
+        });
+    }
+
+    private void configureChannel6Tab() {
+        probabilityChannel6Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        modulationRateChannel6.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        countInTheBundleChannel6.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        recoveryTimeChannel6.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        avgLengthPackageChannel6.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+
+        probabilityChannel6Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            channels.stream().filter(c->c.getLabel().equals("6")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
+        });
     }
     private Route stringToRoute(String strRoute) {
         List<String> nodesStrList = Arrays.asList(strRoute.split("->"));
         List<Node> nodesList = new ArrayList<>();
+        List<Channel> channelList = new ArrayList<>();
+
         for(String node : nodesStrList) {
             nodes.stream().filter(n -> n.getLabel().equals(node)).findFirst().ifPresent(nodesList::add);
+            if (nodesList.size()>1) {
+                channels.stream().filter(c -> c.getNodes().contains(nodesList.get(nodesList.size() - 1)) && c.getNodes().contains(nodesList.get(nodesList.size()-2)))
+                        .findFirst().ifPresent(channelList::add);
+            }
         }
-        return new Route(nodesList, nodesStrList.size()-1, strRoute);
+
+        channelList.forEach(System.out::println);
+        return new Route(nodesList, nodesStrList.size()-1, strRoute, channelList);
     }
 
     private List<Node> stringToNodes(String strRoute) {
@@ -266,27 +358,39 @@ public class HelloController {
         for (String n:nodesStr) {
             Optional<Node> findNode = nodes.stream().filter(node -> node.getLabel().equals(n)).findFirst();
             findNode.ifPresent(nodesResult::add);
+
         }
         return nodesResult;
     }
 
+    private List<Channel> stringToChannels(String strRoute) {
+        List<Node> nodeList = stringToNodes(strRoute);
+        List<Channel> channelList = new ArrayList<>();
+
+        for(int i = 1; i< nodeList.size(); i++) {
+            int finalI = i;
+            channels.stream().filter(c -> c.getNodes().contains(nodeList.get(finalI)) && c.getNodes().contains(nodeList.get(finalI - 1)))
+                    .findFirst().ifPresent(channelList::add);
+        }
+        channelList.forEach(c -> System.out.println(c.getLabel()));
+        return channelList;
+    }
+
     private void nodeFailureChanged(String labelNode, String value) {
         nodes.get(Integer.parseInt(labelNode) - 1).setProbabilityNodeFailure(Double.valueOf(value));
-        System.out.println("node " + labelNode + " value " + value);
         List<Route> routeWithNode = routes.stream().filter(r -> r.getRouteStr().contains(labelNode)).toList();
 
         if(!routeWithNode.isEmpty()) {
-            routeWithNode.forEach(this::updateNodesInRoute);
+            routeWithNode.forEach(this::updateRoute);
         }
     }
 
-    private void channelFailureChanged(String labelNode, String value) {
-        nodes.get(Integer.parseInt(labelNode) - 1).setProbabilityChannelFailure(Double.valueOf(value));
-
-        List<Route> routeWithNode = routes.stream().filter(r -> r.getRouteStr().contains(labelNode)).toList();
+    private void channelFailureChanged(Channel channel, String value) {
+        channels.stream().filter(c -> c.equals(channel)).findFirst().ifPresent(c -> c.setProbabilityFailure(Double.valueOf(value)));
+        List<Route> routeWithNode = routes.stream().filter(r -> r.getChannel().contains(channel)).toList();
 
         if(!routeWithNode.isEmpty()) {
-            routeWithNode.forEach(this::updateNodesInRoute);
+            routeWithNode.forEach(this::updateRoute);
         }
     }
 
@@ -299,11 +403,13 @@ public class HelloController {
 
     }
 
-    private void updateNodesInRoute(Route routeForUpdate) {
+    private void updateRoute(Route routeForUpdate) {
         routes.stream().filter(r -> r.equals(routeForUpdate)).findFirst().ifPresent(r -> {
             r.setRoute(stringToNodes(routeForUpdate.getRouteStr()));
+            r.setChannel(stringToChannels(routeForUpdate.getRouteStr()));
         });
     }
+
     private double getNormalProbabilityOfRoutes(double routeProbability) {
         double sum = 0.0;
         for(Route r : routes) {
