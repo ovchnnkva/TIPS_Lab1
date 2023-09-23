@@ -5,8 +5,8 @@ import java.util.Objects;
 public class Node {
     private String label;
     private Double probabilityChannelFailure;
-
     private Double probabilityNodeFailure ;
+    private double intensity;
 
     public Node(String label) {
         this.label = label;
@@ -36,6 +36,14 @@ public class Node {
 
     public void setProbabilityNodeFailure(Double probabilityNodeFailure) {
         this.probabilityNodeFailure = probabilityNodeFailure;
+    }
+
+    public double getIntensity() {
+        return intensity;
+    }
+
+    public void setIntensity(double intensity) {
+        this.intensity = intensity;
     }
 
     @Override

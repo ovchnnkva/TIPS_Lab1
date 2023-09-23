@@ -5,6 +5,8 @@ import com.example.tips_lab1.formatter.StringToRouteStringFormatter;
 import com.example.tips_lab1.model.Channel;
 import com.example.tips_lab1.model.Node;
 import com.example.tips_lab1.model.Route;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,13 +44,13 @@ public class HelloController {
 
     //Основные
     @FXML
-    private TextField avgRecoveryChannel;
+    private TextField avgLengthMessage;
 
     @FXML
-    private TextField avgRecoveryNode;
+    private TextField intesityMessage;
 
     @FXML
-    private TextField avgLengthPackage;
+    private TextField minDeliveryTime;
     //Связи
     @FXML
     public TextField routeFailure;
@@ -57,28 +59,38 @@ public class HelloController {
 
     @FXML
     private ComboBox<String> connectionSellect;
-    //Канал 1
+    //Узел 1
     @FXML
     public TextField probabilityNode1Failure;
     @FXML
     public TextField recoveryTimeNode1;
-    // Канал 2
+    @FXML
+    public TextField intensityNode1;
+
+    // Узел 2
     @FXML
     public TextField probabilityNode2Failure;
     @FXML
     public TextField recoveryTimeNode2;
-    // Канал 3
+    @FXML
+    public TextField intensityNode2;
+    // Узел 3
     @FXML
     public TextField probabilityNode3Failure;
     @FXML
     public TextField recoveryTimeNode3;
-    // Канал 4
+    @FXML
+    public TextField intensityNode3;
+    // Узел 4
     @FXML
     public TextField probabilityNode4Failure;
     @FXML
     public TextField recoveryTimeNode4;
+    @FXML
+    public TextField intensityNode4;
 
-    // Узел 1
+
+    // Канал 1
     @FXML
     public TextField probabilityChannel1Failure;
     @FXML
@@ -89,8 +101,10 @@ public class HelloController {
     public TextField recoveryTimeChannel1;
     @FXML
     public TextField avgLengthPackageChannel1;
+    @FXML
+    public TextField avgTransmissionTimeChannel1;
 
-    // Узел 2
+    // Канал 2
     @FXML
     public TextField probabilityChannel2Failure;
     @FXML
@@ -101,7 +115,9 @@ public class HelloController {
     public TextField modulationRateChannel2;
     @FXML
     public TextField avgLengthPackageChannel2;
-    // Узел 3
+    @FXML
+    public TextField avgTransmissionTimeChannel2;
+    // Канал 3
     @FXML
     public TextField probabilityChannel3Failure;
     @FXML
@@ -112,7 +128,9 @@ public class HelloController {
     public TextField modulationRateChannel3;
     @FXML
     public TextField avgLengthPackageChannel3;
-    // Узел 4
+    @FXML
+    public TextField avgTransmissionTimeChannel3;
+    // Канал 4
     @FXML
     public TextField probabilityChannel4Failure;
     @FXML
@@ -123,6 +141,8 @@ public class HelloController {
     public TextField modulationRateChannel4;
     @FXML
     public TextField avgLengthPackageChannel4;
+    @FXML
+    public TextField avgTransmissionTimeChannel4;
     //Канал 5
     @FXML
     public TextField probabilityChannel5Failure;
@@ -134,6 +154,8 @@ public class HelloController {
     public TextField modulationRateChannel5;
     @FXML
     public TextField avgLengthPackageChannel5;
+    @FXML
+    public TextField avgTransmissionTimeChannel5;
     //Канал 6
     @FXML
     public TextField probabilityChannel6Failure;
@@ -145,6 +167,9 @@ public class HelloController {
     public TextField modulationRateChannel6;
     @FXML
     public TextField avgLengthPackageChannel6;
+    @FXML
+    public TextField avgTransmissionTimeChannel6;
+
 
     private List<Route> routes;
     private List<Node> nodes;
@@ -227,9 +252,9 @@ public class HelloController {
     }
 
     private void configureBaseTab() {
-        avgRecoveryChannel.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
-        avgLengthPackage.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
-        avgRecoveryNode.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        avgLengthMessage.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        minDeliveryTime.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
+        intesityMessage.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
         messageAddressing.setTextFormatter(new StringToRouteStringFormatter().getTextFormatter());
     }
 
@@ -273,6 +298,19 @@ public class HelloController {
             channels.stream().filter(c->c.getLabel().equals("1")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
         });
 
+        modulationRateChannel1.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel1.getText()), Double.parseDouble(modulationRateChannel1.getText()), Double.parseDouble(countInTheBundleChannel1.getText()));
+            avgTransmissionTimeChannel1.setText(df.format(result));
+        }));
+        avgLengthPackageChannel1.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel1.getText()), Double.parseDouble(modulationRateChannel1.getText()), Double.parseDouble(countInTheBundleChannel1.getText()));
+            avgTransmissionTimeChannel1.setText(df.format(result));
+        }));
+        countInTheBundleChannel1.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel1.getText()), Double.parseDouble(modulationRateChannel1.getText()), Double.parseDouble(countInTheBundleChannel1.getText()));
+            avgTransmissionTimeChannel1.setText(df.format(result));
+        }));
+
     }
     private void configureChannel2Tab() {
         probabilityChannel2Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
@@ -285,6 +323,18 @@ public class HelloController {
                 channels.stream().filter(c->c.getLabel().equals("2")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
     });
 
+        modulationRateChannel2.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel2.getText()), Double.parseDouble(modulationRateChannel2.getText()), Double.parseDouble(countInTheBundleChannel2.getText()));
+            avgTransmissionTimeChannel2.setText(df.format(result));
+        }));
+        avgLengthPackageChannel2.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel2.getText()), Double.parseDouble(modulationRateChannel2.getText()), Double.parseDouble(countInTheBundleChannel2.getText()));
+            avgTransmissionTimeChannel2.setText(df.format(result));
+        }));
+        countInTheBundleChannel2.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel2.getText()), Double.parseDouble(modulationRateChannel2.getText()), Double.parseDouble(countInTheBundleChannel2.getText()));
+            avgTransmissionTimeChannel2.setText(df.format(result));
+        }));
 
     }
     private void configureChannel3Tab() {
@@ -298,6 +348,19 @@ public class HelloController {
                 channels.stream().filter(c->c.getLabel().equals("3")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
         });
 
+        modulationRateChannel3.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel3.getText()), Double.parseDouble(modulationRateChannel3.getText()), Double.parseDouble(countInTheBundleChannel3.getText()));
+            avgTransmissionTimeChannel3.setText(df.format(result));
+        }));
+        avgLengthPackageChannel3.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel3.getText()), Double.parseDouble(modulationRateChannel3.getText()), Double.parseDouble(countInTheBundleChannel3.getText()));
+            avgTransmissionTimeChannel3.setText(df.format(result));
+        }));
+        countInTheBundleChannel3.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel3.getText()), Double.parseDouble(modulationRateChannel3.getText()), Double.parseDouble(countInTheBundleChannel3.getText()));
+            avgTransmissionTimeChannel3.setText(df.format(result));
+        }));
+
     }
     private void configureChannel4Tab() {
         probabilityChannel4Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
@@ -309,6 +372,19 @@ public class HelloController {
         probabilityChannel4Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
             channels.stream().filter(c->c.getLabel().equals("4")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
         });
+
+        modulationRateChannel4.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel4.getText()), Double.parseDouble(modulationRateChannel4.getText()), Double.parseDouble(countInTheBundleChannel4.getText()));
+            avgTransmissionTimeChannel4.setText(df.format(result));
+        }));
+        avgLengthPackageChannel4.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel4.getText()), Double.parseDouble(modulationRateChannel4.getText()), Double.parseDouble(countInTheBundleChannel4.getText()));
+            avgTransmissionTimeChannel4.setText(df.format(result));
+        }));
+        countInTheBundleChannel4.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel4.getText()), Double.parseDouble(modulationRateChannel4.getText()), Double.parseDouble(countInTheBundleChannel4.getText()));
+            avgTransmissionTimeChannel4.setText(df.format(result));
+        }));
     }
 
     private void configureChannel5Tab() {
@@ -321,6 +397,19 @@ public class HelloController {
         probabilityChannel5Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
             channels.stream().filter(c->c.getLabel().equals("5")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
         });
+
+        modulationRateChannel5.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel5.getText()), Double.parseDouble(modulationRateChannel5.getText()), Double.parseDouble(countInTheBundleChannel5.getText()));
+            avgTransmissionTimeChannel5.setText(df.format(result));
+        }));
+        avgLengthPackageChannel5.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel5.getText()), Double.parseDouble(modulationRateChannel5.getText()), Double.parseDouble(countInTheBundleChannel5.getText()));
+            avgTransmissionTimeChannel5.setText(df.format(result));
+        }));
+        countInTheBundleChannel5.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel5.getText()), Double.parseDouble(modulationRateChannel5.getText()), Double.parseDouble(countInTheBundleChannel5.getText()));
+            avgTransmissionTimeChannel5.setText(df.format(result));
+        }));
     }
 
     private void configureChannel6Tab() {
@@ -333,6 +422,19 @@ public class HelloController {
         probabilityChannel6Failure.textProperty().addListener((observableValue, oldValue, newValue) -> {
             channels.stream().filter(c->c.getLabel().equals("6")).findFirst().ifPresent(c -> channelFailureChanged(c, newValue));
         });
+
+        modulationRateChannel6.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel6.getText()), Double.parseDouble(modulationRateChannel6.getText()), Double.parseDouble(countInTheBundleChannel6.getText()));
+            avgTransmissionTimeChannel6.setText(String.valueOf(result));
+        }));
+        avgLengthPackageChannel6.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel6.getText()), Double.parseDouble(modulationRateChannel6.getText()), Double.parseDouble(countInTheBundleChannel6.getText()));
+            avgTransmissionTimeChannel6.setText(String.valueOf(result));
+        }));
+        countInTheBundleChannel6.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel6.getText()), Double.parseDouble(modulationRateChannel6.getText()), Double.parseDouble(countInTheBundleChannel6.getText()));
+            avgTransmissionTimeChannel6.setText(String.valueOf(result));
+        }));
     }
     private Route stringToRoute(String strRoute) {
         List<String> nodesStrList = Arrays.asList(strRoute.split("->"));
@@ -399,6 +501,7 @@ public class HelloController {
         if(findRoute.isPresent()) {
             routeFailure.setText(df.format(findRoute.get().getProbabilityOfRoute()));
             normalRouteFailure.setText(df.format(getNormalProbabilityOfRoutes(findRoute.get().getProbabilityOfRoute())));
+            setIntensityOfNode(findRoute.get().getRoute().get(findRoute.get().getRoute().size() - 1).getLabel(), findRoute.get().getProbabilityOfRoute());
         }
 
     }
@@ -423,4 +526,20 @@ public class HelloController {
         return routeProbability/sum;
     }
 
+    private double calculateAvgTransmission(double avgLengthPkg, double modulationRate, double countBundle) {
+        return avgLengthPkg / (modulationRate * countBundle);
+    }
+
+    private void setIntensityOfNode(String nodeLabel, double probability) {
+        double intesity = 0;
+        if(!intesityMessage.getText().isBlank()) {
+            intesity = Double.parseDouble(intesityMessage.getText()) * probability;
+        }
+        switch (nodeLabel) {
+            case "1": intensityNode1.setText(df.format(intesity));
+            case "2": intensityNode2.setText(df.format(intesity));
+            case "3": intensityNode3.setText(df.format(intesity));
+            case "4": intensityNode4.setText(df.format(intesity));
+        }
+    }
 }
