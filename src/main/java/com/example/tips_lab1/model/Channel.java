@@ -7,6 +7,7 @@ public class Channel {
     private List<Node> nodes;
     private Double probabilityFailure;
     private final String label;
+    private double transmission;
 
     public Channel(List<Node> nodes, String label) {
         this.nodes = nodes;
@@ -31,6 +32,14 @@ public class Channel {
 
     public String getLabel() {
         return label;
+    }
+
+    public double getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(double transmission) {
+        this.transmission = transmission;
     }
 
     @Override

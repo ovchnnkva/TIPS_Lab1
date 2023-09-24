@@ -10,7 +10,6 @@ public class Route {
     private final String routeStr;
 
     private List<Channel> channels;
-
     public Route(List<Node> route, int countChannel, String routeStr, List<Channel> channels) {
         this.route = route;
         this.countChannel = countChannel;
@@ -47,21 +46,17 @@ public class Route {
 
     public double getProbabilityOfRoute() {
         double result = 1.0;
-        System.out.println("node size " + route.size());
-        System.out.println("channel size " + channels.size());
         for(int i = 0; i<route.size() - 1;i++) {
             Node startNode = route.get(i);
             Node endNode = route.get(i + 1);
             if(checkNodeAndChannel(startNode) && checkChannel(startNode,endNode)){
                 result *= (1 - startNode.getProbabilityNodeFailure()) * (1 - getProbabilityChannel(startNode, endNode));
-                System.out.println(routeStr + " node " + startNode.getLabel() + " channel probability = " + getProbabilityChannel(startNode, endNode) + " node probability " + startNode.getProbabilityNodeFailure());
             } else {
                 return 0.0;
             }
 
         }
         result *= (1 - route.get(route.size()-1).getProbabilityNodeFailure());
-        System.out.println("route " + routeStr + " probability " + result);
         return 1.0 - result;
     }
 

@@ -5,8 +5,6 @@ import com.example.tips_lab1.formatter.StringToRouteStringFormatter;
 import com.example.tips_lab1.model.Channel;
 import com.example.tips_lab1.model.Node;
 import com.example.tips_lab1.model.Route;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,10 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -56,38 +52,58 @@ public class HelloController {
     public TextField routeFailure;
     @FXML
     public TextField normalRouteFailure;
-
     @FXML
     private ComboBox<String> connectionSellect;
+    @FXML
+    private TextField intensityNode1;
+    @FXML
+    private TextField intensityNode2;
+    @FXML
+    private TextField intensityNode3;
+    @FXML
+    private TextField intensityNode4;
+    @FXML
+    private TextField delayTimeNode1;
+    @FXML
+    private TextField delayTimeNode2;
+    @FXML
+    private TextField delayTimeNode3;
+    @FXML
+    private TextField delayTimeNode4;
+    @FXML
+    private TextField countMessageNode1;
+    @FXML
+    private TextField countMessageNode2;
+    @FXML
+    private TextField countMessageNode3;
+    @FXML
+    private TextField countMessageNode4;
+    @FXML
+    private TextField avgDelayTime;
+    @FXML
+    private TextField avgTransferTime;
+
     //Узел 1
     @FXML
     public TextField probabilityNode1Failure;
     @FXML
     public TextField recoveryTimeNode1;
-    @FXML
-    public TextField intensityNode1;
 
     // Узел 2
     @FXML
     public TextField probabilityNode2Failure;
     @FXML
     public TextField recoveryTimeNode2;
-    @FXML
-    public TextField intensityNode2;
     // Узел 3
     @FXML
     public TextField probabilityNode3Failure;
     @FXML
     public TextField recoveryTimeNode3;
-    @FXML
-    public TextField intensityNode3;
     // Узел 4
     @FXML
     public TextField probabilityNode4Failure;
     @FXML
     public TextField recoveryTimeNode4;
-    @FXML
-    public TextField intensityNode4;
 
 
     // Канал 1
@@ -174,11 +190,16 @@ public class HelloController {
     private List<Route> routes;
     private List<Node> nodes;
     private List<Channel> channels;
-    private final DecimalFormat df = new DecimalFormat("#.#####");
+    private DecimalFormat df;
 
 
     @FXML
     private void initialize() {
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
+        otherSymbols.setDecimalSeparator('.');
+        otherSymbols.setGroupingSeparator('.');
+        df = new DecimalFormat("#.#####", otherSymbols);
+
         routes = new ArrayList<>();
         nodes = new ArrayList<>();
         channels = new ArrayList<>();
@@ -206,12 +227,11 @@ public class HelloController {
     private void configureChannels() {
         List<Channel> channelsList = new ArrayList<>();
         channelsList.add(new Channel(Arrays.asList(nodes.get(0), nodes.get(1)), "1"));
-        channelsList.add(new Channel(Arrays.asList(nodes.get(0), nodes.get(3)), "4"));
-        channelsList.add(new Channel(Arrays.asList(nodes.get(0), nodes.get(2)), "3"));
-        channelsList.add(new Channel(Arrays.asList(nodes.get(1), nodes.get(3)), "5"));
         channelsList.add(new Channel(Arrays.asList(nodes.get(1), nodes.get(2)), "2"));
+        channelsList.add(new Channel(Arrays.asList(nodes.get(0), nodes.get(2)), "3"));
+        channelsList.add(new Channel(Arrays.asList(nodes.get(0), nodes.get(3)), "4"));
+        channelsList.add(new Channel(Arrays.asList(nodes.get(1), nodes.get(3)), "5"));
         channelsList.add(new Channel(Arrays.asList(nodes.get(2), nodes.get(3)), "6"));
-
 
         channels.addAll(channelsList);
     }
@@ -259,7 +279,12 @@ public class HelloController {
     }
 
     private void configureCommunications() {
-        connectionSellect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> changeProbabilityOfRoute(newValue));
+        connectionSellect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            clearIntensity();
+            clearDelayTime();
+            clearCountMessage();
+            changeProbabilityOfRoute(newValue);
+        });
     }
 
     private void configureNodes() {
@@ -311,6 +336,9 @@ public class HelloController {
             avgTransmissionTimeChannel1.setText(df.format(result));
         }));
 
+        avgTransmissionTimeChannel1.textProperty().addListener((observable, oldValue, newValue) -> {
+            channels.get(0).setTransmission(Double.parseDouble(newValue));
+        });
     }
     private void configureChannel2Tab() {
         probabilityChannel2Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
@@ -336,6 +364,9 @@ public class HelloController {
             avgTransmissionTimeChannel2.setText(df.format(result));
         }));
 
+        avgTransmissionTimeChannel2.textProperty().addListener((observable, oldValue, newValue) -> {
+            channels.get(1).setTransmission(Double.parseDouble(newValue));
+        });
     }
     private void configureChannel3Tab() {
         probabilityChannel3Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
@@ -361,6 +392,9 @@ public class HelloController {
             avgTransmissionTimeChannel3.setText(df.format(result));
         }));
 
+        avgTransmissionTimeChannel3.textProperty().addListener((observable, oldValue, newValue) -> {
+            channels.get(2).setTransmission(Double.parseDouble(newValue));
+        });
     }
     private void configureChannel4Tab() {
         probabilityChannel4Failure.setTextFormatter(new StringToDoubleFormatter().getTextFormatter());
@@ -385,6 +419,10 @@ public class HelloController {
             double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel4.getText()), Double.parseDouble(modulationRateChannel4.getText()), Double.parseDouble(countInTheBundleChannel4.getText()));
             avgTransmissionTimeChannel4.setText(df.format(result));
         }));
+
+        avgTransmissionTimeChannel4.textProperty().addListener((observable, oldValue, newValue) -> {
+            channels.get(3).setTransmission(Double.parseDouble(newValue));
+        });
     }
 
     private void configureChannel5Tab() {
@@ -410,6 +448,10 @@ public class HelloController {
             double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel5.getText()), Double.parseDouble(modulationRateChannel5.getText()), Double.parseDouble(countInTheBundleChannel5.getText()));
             avgTransmissionTimeChannel5.setText(df.format(result));
         }));
+
+        avgTransmissionTimeChannel5.textProperty().addListener((observable, oldValue, newValue) -> {
+            channels.get(4).setTransmission(Double.parseDouble(newValue));
+        });
     }
 
     private void configureChannel6Tab() {
@@ -425,16 +467,20 @@ public class HelloController {
 
         modulationRateChannel6.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel6.getText()), Double.parseDouble(modulationRateChannel6.getText()), Double.parseDouble(countInTheBundleChannel6.getText()));
-            avgTransmissionTimeChannel6.setText(String.valueOf(result));
+            avgTransmissionTimeChannel6.setText(df.format(result));
         }));
         avgLengthPackageChannel6.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel6.getText()), Double.parseDouble(modulationRateChannel6.getText()), Double.parseDouble(countInTheBundleChannel6.getText()));
-            avgTransmissionTimeChannel6.setText(String.valueOf(result));
+            avgTransmissionTimeChannel6.setText(df.format(result));
         }));
         countInTheBundleChannel6.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             double result = calculateAvgTransmission(Double.parseDouble(avgLengthPackageChannel6.getText()), Double.parseDouble(modulationRateChannel6.getText()), Double.parseDouble(countInTheBundleChannel6.getText()));
-            avgTransmissionTimeChannel6.setText(String.valueOf(result));
+            avgTransmissionTimeChannel6.setText(df.format(result));
         }));
+
+        avgTransmissionTimeChannel6.textProperty().addListener((observable, oldValue, newValue) -> {
+            channels.get(5).setTransmission(Double.parseDouble(newValue));
+        });
     }
     private Route stringToRoute(String strRoute) {
         List<String> nodesStrList = Arrays.asList(strRoute.split("->"));
@@ -449,7 +495,6 @@ public class HelloController {
             }
         }
 
-        channelList.forEach(System.out::println);
         return new Route(nodesList, nodesStrList.size()-1, strRoute, channelList);
     }
 
@@ -499,9 +544,10 @@ public class HelloController {
     private void changeProbabilityOfRoute(String routeStr) {
         Optional<Route> findRoute = routes.stream().filter(r -> r.getRouteStr().equals(routeStr)).findFirst();
         if(findRoute.isPresent()) {
-            routeFailure.setText(df.format(findRoute.get().getProbabilityOfRoute()));
-            normalRouteFailure.setText(df.format(getNormalProbabilityOfRoutes(findRoute.get().getProbabilityOfRoute())));
-            setIntensityOfNode(findRoute.get().getRoute().get(findRoute.get().getRoute().size() - 1).getLabel(), findRoute.get().getProbabilityOfRoute());
+            double probability = findRoute.get().getProbabilityOfRoute();
+            routeFailure.setText(df.format(probability));
+            normalRouteFailure.setText(df.format(getNormalProbabilityOfRoutes(probability)));
+            setIntensity(findRoute.get(), findRoute.get().getRoute().get(1), getNormalProbabilityOfRoutes(probability));
         }
 
     }
@@ -527,19 +573,156 @@ public class HelloController {
     }
 
     private double calculateAvgTransmission(double avgLengthPkg, double modulationRate, double countBundle) {
-        return avgLengthPkg / (modulationRate * countBundle);
+        if(modulationRate*countBundle != 0) {
+            return avgLengthPkg / (modulationRate * countBundle);
+        } else return 0.0;
     }
 
-    private void setIntensityOfNode(String nodeLabel, double probability) {
-        double intesity = 0;
+    private void setIntensity(Route route, Node node, double probabilityOrIntensity) {
+        double intensity = 0.0;
+        System.out.println("setIntensity for node " + node.getLabel());
         if(!intesityMessage.getText().isBlank()) {
-            intesity = Double.parseDouble(intesityMessage.getText()) * probability;
+            if(route.getRoute().indexOf(node) > 1) {
+                System.out.println(intesityMessage.getText() + "*" + probabilityOrIntensity);
+                intensity = probabilityOrIntensity;
+            } else {
+                System.out.println(intesityMessage.getText() + "*" + probabilityOrIntensity);
+                intensity = Double.parseDouble(intesityMessage.getText()) * probabilityOrIntensity;
+            }
         }
-        switch (nodeLabel) {
-            case "1": intensityNode1.setText(df.format(intesity));
-            case "2": intensityNode2.setText(df.format(intesity));
-            case "3": intensityNode3.setText(df.format(intesity));
-            case "4": intensityNode4.setText(df.format(intesity));
+        switch (node.getLabel()) {
+            case "1":
+                intensityNode1.setText(df.format(intensity));
+                break;
+            case "2":
+                intensityNode2.setText(df.format(intensity));
+                break;
+            case "3":
+                intensityNode3.setText(df.format(intensity));
+                break;
+            case "4":
+                intensityNode4.setText(df.format(intensity));
+                break;
         }
+        setDelayTime(route, node, intensity);
+
+        if (route.getRoute().size() > 2 && route.getRoute().indexOf(node) == 1) {
+            for (int i = 2; i < route.getRoute().size(); i++) {
+                System.out.println("set intensity for next node " + route.getRoute().get(i).getLabel());
+                setIntensity(route, route.getRoute().get(i), getIntensityForPreviousNode(route, route.getRoute().get(i)));
+            }
+        }
+
+        setAvgDelayTime();
+        setAvgTransferTime(route);
+    }
+    private void setDelayTime(Route route, Node node, double intensity) {
+        int endNode = route.getRoute().indexOf(node);
+        double p;
+        Optional<Channel> channel = channels.stream().filter(c ->
+                c.getNodes().contains(route.getRoute().get(endNode-1)) && c.getNodes().contains(route.getRoute().get(endNode)))
+                .findFirst();
+        if(channel.isPresent()) {
+            Channel chanelFind = channel.get();
+            p = (intensity * chanelFind.getTransmission());
+            System.out.println("set delay time for node " + node.getLabel());
+            System.out.println(intensity + "*" + chanelFind.getTransmission() + "*" + intensity + "/(1 - " + intensity + " * " +chanelFind.getTransmission());
+            switch(node.getLabel()) {
+                case "1":
+                    delayTimeNode1.setText(df.format((p * chanelFind.getTransmission()) / (1.0 - p)));
+                    setCountMessage(node, p);
+                    break;
+                case "2":
+                    delayTimeNode2.setText(df.format((p * chanelFind.getTransmission()) / (1.0 - p)));
+                    setCountMessage(node,  p);
+                    break;
+                case "3":
+                    delayTimeNode3.setText(df.format((p * chanelFind.getTransmission()) / (1.0 - p)));
+                    setCountMessage(node,  p);
+                    break;
+                case "4":
+                    setCountMessage(node, p);
+                    delayTimeNode4.setText(df.format((p * chanelFind.getTransmission()) / (1.0 - p)));
+                    break;
+            }
+        }
+    }
+
+    private void setCountMessage(Node node, double p) {
+        System.out.println("set count message for node " + node.getLabel());
+        System.out.println(p + "*" + p + "/(1 - "+p + ")");
+        switch (node.getLabel()) {
+            case "1":
+                countMessageNode1.setText(df.format(p * p/(1 - p)));
+                break;
+            case "2":
+                countMessageNode2.setText(df.format(p * p/(1 - p)));
+                break;
+            case "3":
+                countMessageNode3.setText(df.format(p * p/(1 - p)));
+                break;
+            case "4":
+                countMessageNode4.setText(df.format(p * p/(1 - p)));
+                break;
+        }
+    }
+
+    private double getIntensityForPreviousNode(Route route, Node node) {
+        int indexNode = route.getRoute().indexOf(node) - 1;
+        return switch (route.getRoute().get(indexNode).getLabel()) {
+            case "1" -> {
+                System.out.println("previous node: 1");
+                yield Double.parseDouble(intensityNode1.getText()) / Double.parseDouble(countMessageNode1.getText());
+            }
+            case "2" -> {
+                System.out.println("previous node: 2");
+                yield Double.parseDouble(intensityNode2.getText()) / Double.parseDouble(countMessageNode2.getText());
+            }
+            case "3" -> {
+                System.out.println("previous node: 3" );
+                yield Double.parseDouble(intensityNode3.getText()) / Double.parseDouble(countMessageNode3.getText());
+            }
+            case "4" -> {
+                System.out.println("previous node: 4" );
+                yield Double.parseDouble(intensityNode4.getText()) / Double.parseDouble(countMessageNode4.getText());
+            }
+            default -> 0.0;
+        };
+    }
+
+    private void setAvgDelayTime() {
+        double delayTime1 = Double.parseDouble(delayTimeNode1.getText());
+        double delayTime2 = Double.parseDouble(delayTimeNode2.getText());
+        double delayTime3 = Double.parseDouble(delayTimeNode3.getText());
+        double delayTime4 = Double.parseDouble(delayTimeNode4.getText());
+        double sum = delayTime1 + delayTime2 + delayTime3 + delayTime4;
+
+        avgDelayTime.setText(df.format(sum));
+    }
+    private void setAvgTransferTime(Route route) {
+        double sum = 0.0;
+        List<Channel> channelList = route.getChannel();
+        sum += (channelList.stream().mapToDouble(Channel::getTransmission).sum() + Double.parseDouble(avgDelayTime.getText()));
+        avgTransferTime.setText(df.format(sum));
+    }
+
+    private void clearIntensity(){
+        intensityNode1.setText(String.valueOf(0.0));
+        intensityNode2.setText(String.valueOf(0.0));
+        intensityNode3.setText(String.valueOf(0.0));
+        intensityNode4.setText(String.valueOf(0.0));
+    }
+
+    private void clearDelayTime() {
+        delayTimeNode1.setText(String.valueOf(0.0));
+        delayTimeNode2.setText(String.valueOf(0.0));
+        delayTimeNode3.setText(String.valueOf(0.0));
+        delayTimeNode4.setText(String.valueOf(0.0));
+    }
+    private void clearCountMessage() {
+        countMessageNode1.setText(String.valueOf(0.0));
+        countMessageNode2.setText(String.valueOf(0.0));
+        countMessageNode3.setText(String.valueOf(0.0));
+        countMessageNode4.setText(String.valueOf(0.0));
     }
 }
